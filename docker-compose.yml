@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  macos:
+    image: dockurr/macos:latest
+    container_name: macos
+    restart: always
+    ports:
+      - ${HTTP_PORT}:8006
+      - ${RDP_PORT}:5900/tcp
+      - ${RDP_PORT}:5900/udp
+    networks:
+      - default
+    volumes:
+      - data:/var/data
+    environment:
+      VERSION: "13"
+    devices:
+      - /dev/kvm
+    cap_add:
+      - NET_ADMIN
+    stop_grace_period: 2m
+
+networks:
+  default:
+    name: docker_macos_network
+    driver: bridge
+
+volumes:
+  data:
+    name: docker_macos_data
+    driver: local
